@@ -12,3 +12,34 @@ const initdb = async () =>
       console.log('jate database created');
     },
   });
+
+  export const putDB = async (content) => {
+    try {
+      console.log(content, 'content to be saved');
+      const jateDB = await openDB('jate', 1);
+      const tx = jateDB.transaction('jate', 'readwrite');
+      const store = tx.objectStore('jate');
+      const request = store.put({ id: 1, content });
+
+      const result = await request;
+      jateDB.close();
+    } catch (error) {
+      console.error('Error replacing jate data', error);
+    }
+  };
+
+  export const getDb = async () => {
+    try {
+      const jateDB = await openDB('jate', 1);
+      const tx = jateDB.transaction('jate', 'readonly');
+      const store = tx.objectStore('jate');
+      const request = store.get(1);
+      const result = await request;
+      jateDB.close();
+      return result.content;
+    } catch (error) {
+      console.error('Error getting data from jate:', error);
+    }
+  };
+
+initdb();
