@@ -1,4 +1,3 @@
-
 import { openDB } from 'idb';
 
 const initdb = async () =>
@@ -13,21 +12,23 @@ const initdb = async () =>
     },
   });
 
-  export const putDB = async (content) => {
+  export const putDb = async (content) => {
     try {
       console.log(content, 'content to be saved');
       const jateDB = await openDB('jate', 1);
       const tx = jateDB.transaction('jate', 'readwrite');
       const store = tx.objectStore('jate');
-      const request = store.put({ id: 1, content });
-
+      const request = store.put({ 
+        id: 1, 
+        content: content 
+      });
       const result = await request;
       jateDB.close();
     } catch (error) {
-      console.error('Error replacing jate data', error);
+      console.error('Error replacing data in jate:', error);
     }
   };
-
+  
   export const getDb = async () => {
     try {
       const jateDB = await openDB('jate', 1);

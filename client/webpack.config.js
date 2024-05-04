@@ -1,7 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
-const { InjectManifest } = require('workbox-webpack-plugin');
+const { InjectManifest, GenerateSW } = require('workbox-webpack-plugin');
+
+// TODO: Add and configure workbox plugins for a service worker and manifest file.
+// TODO: Add CSS loaders and babel to webpack.
 
 module.exports = (env, argv) => {
   const isDevMode = argv.mode === 'development';
@@ -25,11 +28,11 @@ module.exports = (env, argv) => {
       hot: true,
     },
     watchOptions: {
-      ignored: /src-sw\.js$/, // excludes service worker source file
+      ignored: /src-sw\.js$/, // exclude service worker source file from being watched
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './index.html', // path to index.html file
+        template: './index.html', // path to your index.html file
       }),
       new WebpackPwaManifest({
         name: 'Just Another Text Editor',
@@ -45,7 +48,7 @@ module.exports = (env, argv) => {
             destination: path.join('assets', 'icons'),
           },
         ],
-        filename: 'manifest.json', // specify filename
+        filename: 'manifest.json', // specify the filename
         inject: true, // ensure the manifest is injected into the html
         fingerprints: false, // remove fingerprints from the manifest
       }),
